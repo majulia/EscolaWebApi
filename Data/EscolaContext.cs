@@ -9,5 +9,11 @@ namespace EscolaWebApi.Data
 
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Turma> Turmas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Aluno>().ToTable("aluno");
+            modelBuilder.Entity<Turma>().ToTable("turma");
+        }
     }
 }
