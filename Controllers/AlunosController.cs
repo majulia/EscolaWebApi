@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using EscolaWebApi.Models;
 using EscolaWebApi.Data;
 
-namespace EscolaWebApi.Controllers
+namespace EscolaWebApi.Controllers  
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -15,6 +15,7 @@ namespace EscolaWebApi.Controllers
             _context = escolaContext;
         }
 
+        [HttpGet("GetAlunos")]
         public async Task<ActionResult> GetAlunos()
         {
             IQueryable<Aluno> query = _context.Alunos;
