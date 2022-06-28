@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<EscolaContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-//});
-
-builder.Services.AddDbContext<EscolaContext>(opt =>
-opt.UseSqlServer(@"Server=DESKTOP-AAIM448\SQLEXPRESS;Database=escola;User Id=root;Password=123456"));
+builder.Services.AddDbContext<EscolaContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 // Add services to the container.
 
