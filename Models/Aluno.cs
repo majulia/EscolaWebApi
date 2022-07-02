@@ -9,5 +9,6 @@ namespace EscolaWebApi.Models
         public string Sexo { get; set; }
         public int TotalFaltas { get; set; }
         public int TurmaId { get; set; }
+        public bool Ativo { get; set; } = true;
     }
 }

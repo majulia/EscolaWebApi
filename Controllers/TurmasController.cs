@@ -1,6 +1,6 @@
 ﻿using EscolaWebApi.Data;
+using EscolaWebApi.Data.Interfaces;
 using EscolaWebApi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EscolaWebApi.Controllers
@@ -9,39 +9,51 @@ namespace EscolaWebApi.Controllers
     [ApiController]
     public class TurmasController : ControllerBase
     {
-        private readonly EscolaContext _context;
+        private readonly ITurmaRepository _repo;
 
-        public TurmasController(EscolaContext context)
+        public TurmasController(ITurmaRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetTurmas()
+        [HttpGet("GetTurmas")]
+        public IActionResult Get()
         {
-            IQueryable<Turma> query = _context.Turmas;
-            return Ok(query.ToArray());
+            var result = _repo.BuscaTurma();
+            return Ok(result);
         }
 
-
-        [HttpGet("GetTurmaById")]
-        public async Task<ActionResult> GetTurmasById(int turmaId)
+        [HttpGet("GetTurmasById/{id}")]
+        public IActionResult GetById(int id)
         {
-            IQueryable<Turma> query = _context.Turmas
-            .Where(turma => turma.Id == turmaId);
-
-            return Ok(query.ToArray());
+            var result = _repo.BuscaTurma(id);
+            return Ok(result);
         }
+
 
         [HttpPost]
-        public async Task<ActionResult<List<Turma>>> Post(Turma turma)
+        public IActionResult Post(Turma turma)
         {
-            _context.Turmas.Add(turma);
-            await _context.SaveChangesAsync();
-
-            return await GetTurmas();
+            _repo.AddTurma(turma);
+            return Ok(turma);
         }
 
-        
+        [HttpPut]
+        public IActionResult Put(Turma turma)
+        {
+            var result = _repo.UpdateTurma(turma);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var result = _repo.DeleteTurma(id);
+            return Ok(result);
+        }
+
+
+
+
     }
 }

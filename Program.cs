@@ -1,4 +1,5 @@
 using EscolaWebApi.Data;
+using EscolaWebApi.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<EscolaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
+builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();

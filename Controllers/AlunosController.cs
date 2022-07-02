@@ -1,4 +1,5 @@
 ﻿using EscolaWebApi.Data;
+using EscolaWebApi.Data.Interfaces;
 using EscolaWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,65 +10,46 @@ namespace EscolaWebApi.Controllers
     [ApiController]
     public class AlunosController : ControllerBase
     {
-        private readonly EscolaContext _context;
-        public AlunosController(EscolaContext escolaContext)
+        private readonly IAlunoRepository _repo;
+        public AlunosController(IAlunoRepository repo)
         {
-            _context = escolaContext;
+            _repo = repo;
         }
 
         [HttpGet("GetAlunos")]
-        public async Task<ActionResult> GetAlunos()
+        public IActionResult Get()
         {
-            IQueryable<Aluno> query = _context.Alunos;
-            return Ok(query.ToArray());
+            var result = _repo.BuscaAluno();
+            return Ok(result);
         }
 
-        [HttpGet("GetAlunoById")]
-
-        public async Task<ActionResult> GetAlunosById(int alunoId)
+        [HttpGet("GetAlunosById/{id}")]
+        public IActionResult GetById(int id)
         {
-            IQueryable<Aluno> query = _context.Alunos;
-
-            query = query.AsNoTracking().OrderBy(a => a.Id)
-            .Where(aluno => aluno.Id == alunoId);
-
-            return Ok(query.ToArray());
+            var result = _repo.BuscaAluno(id);
+            return Ok(result);
         }
+
 
         [HttpPost]
-        public async Task<ActionResult<List<Aluno>>> Post(Aluno aluno)
+        public IActionResult Post(Aluno aluno)
         {
-            _context.Alunos.Add(aluno);
-
-            if (aluno.TurmaId != 0)
-                await _context.SaveChangesAsync();
-
-            return await GetAlunos();
+            _repo.AddAluno(aluno);
+            return Ok(aluno);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutAluno(int id, Aluno aluno)
+        [HttpPut]
+        public IActionResult Put(Aluno aluno)
         {
-            if (id != aluno.Id)
-            return BadRequest("Aluno não encontrado");
-            
-            _context.Entry(aluno).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return await GetAlunos();
+            var result = _repo.UpdateAluno(aluno);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var aluno = await _context.Alunos.FindAsync(id);
-            if (aluno == null)
-                return BadRequest("Aluno não encontrado");
-
-            _context.Alunos.Remove(aluno);
-            await _context.SaveChangesAsync();
-
-            return await GetAlunos();
+            var result = _repo.DeleteAluno(id);
+            return Ok(result);
         }
 
     }
