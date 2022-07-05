@@ -1,4 +1,5 @@
 
+## #Readme
 <p align="center"># Projeto Final - Coding Girls :book:</p> 
 
 <p align="center">
@@ -24,4 +25,4 @@ URL: https://escolawebapi20220702192342.azurewebsites.net/api/Alunos/GetAlunos
 
 Visual Studio 2022 ou Visual Studio Code
 dotnet SDK 6.0.301
-Software para realizar solicitações HTTP (Insomnia, Postman...)
+Software para realizar requisições HTTP (Insomnia, Postman...)
